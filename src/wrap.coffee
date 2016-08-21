@@ -90,8 +90,8 @@ try
     React = require 'react'
     # expose all of reacts DOM
     wrap.DOM = wrap.wrapall React.DOM
-catch err
-    console?.warn 'No React for react-elem. Failed to expose DOM'
+catch
+    console?.warn 'No React for react-elem. Failed to expose DOM', err
 
 # ship it
 module.exports = wrap
