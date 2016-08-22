@@ -1,9 +1,6 @@
 
-# Turns a react element into something more palatable.
-# I.e.
-# React.DOM.p null, 'panda'
-# becomes
-# DOM.p 'panda'
+# Turns a react factory function into something more palatable.  I.e.
+# React.DOM.p null, 'panda' becomes DOM.p 'panda'
 
 # not null object?
 isobject   = (o) -> !!o && typeof o == 'object' && !Array.isArray(o)
@@ -37,14 +34,19 @@ wrapCapture = (fn) -> (as...) ->
     ret = fn as...
     if capture.length
         capture[0].push ret
-        undefined
-    else
-        ret
+    ret
 
-wrap = (fn) -> wfn = wrapCapture(fn); (as...) ->
+# helper to ensure element is not captured
+uncapture = (el) ->
+    return unless capture.length
+    cur = capture[0]
+    idx = cur.indexOf(el)
+    cur.splice(idx, 1) if idx >= 0
+    null
 
-    # find all plain properties and merge them
-    # i.e. we can do: div {class:'blah'}, {id:'foo'}
+# find all plain properties and merge them
+# i.e. we can do: div {class:'blah'}, {id:'foo'}
+propsof = (as) ->
     propsas = as.filter isprop
     props = switch propsas.length
         when 0 then null
@@ -55,30 +57,37 @@ wrap = (fn) -> wfn = wrapCapture(fn); (as...) ->
     if props?.class
         props.className = props.class
         delete props.class
+    props
 
-    # gather all strings
+
+# gather all strings
+strnof = (as) ->
     strnas = as.filter isstring
-    strn = switch strnas.length
+    switch strnas.length
         when 0 then null
         when 1 then strnas[0]
         else strnas.join('')
 
-    # all child functions, arrays, and plain elements
-    # together to keep the order
+
+# all child functions, arrays, and plain elements
+# together to keep the order
+childsof = (as) ->
     childsarr = as.filter(ischild).map (c) ->
         if isfunction(c)
             capture.unshift [] # push stack
             c()
-            capture.shift()    # pop stach
-        else
+            capture.shift()    # pop stack
+        else # element or array
             [c]
-
     # unwrap [[a], [b], [c,d]] to [a,b,c,d]
-    childs = [].concat childsarr...
+    child = [].concat childsarr...
+    # ensure no child has been captured in parent capture
+    child.forEach (c) -> if Array.isArray(c) then c.forEach(uncapture) else uncapture(c)
+    child
 
-    # invoke actual factory function
-    wfn props, strn, childs...
 
+# the wrapper picking out all the bits
+wrap = (fn) -> wfn = wrapCapture(fn); (as...) -> wfn propsof(as), strnof(as), childsof(as)...
 
 
 # helper to wrap all values in an object
