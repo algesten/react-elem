@@ -9,7 +9,7 @@ isobject   = (o) -> !!o && typeof o == 'object' && !Array.isArray(o)
 `var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' && Symbol.for && Symbol.for('react.element')) || 0xeac7`
 
 # is a react element?
-isValidElement = (o) -> o.$$typeof == REACT_ELEMENT_TYPE
+isValidElement = (o) -> o?.$$typeof == REACT_ELEMENT_TYPE
 
 # is a plain property?
 isprop     = (o) -> isobject(o) and not isValidElement(o)
