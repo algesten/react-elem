@@ -2,6 +2,8 @@
 
 > Simpler elements without JSX
 
+You can use any order of the function args.
+
 Example:
 
 ```javascript
@@ -15,7 +17,14 @@ export default () => {
     ul(
       li(a({href:"https://github.com/algesten/react-elem"}, "github.com/algesten/react-elem")),
       li(a({href:"https://github.com/algesten/refnux"}, "another cool project"))
-    )
+    ),
+    div({className:'mycl'}, () => {
+        p("I like functions for nesting")
+        p("Makes things cleaner. At least in coffeescript...")
+    }),
+    ul(arraysAreGood.map((txt) => {
+        return li(txt)
+    }))
   );
 }
 ```
@@ -47,6 +56,14 @@ div("Hello!", {id:"mydiv"}) // this
 ul(li("One"), li("Two"), li("Three"))
 ```
 
+
+### Arrays
+
+```javascript
+ul(myArrayOfStrings.map((txt) => {
+    return li(txt)
+}))
+```
 
 ### Function to encapsulate children
 
