@@ -102,5 +102,8 @@ try
 catch
     console?.warn 'No React for react-elem. Failed to expose DOM', err
 
+# expose this
+wrap.REACT_ELEMENT_TYPE = REACT_ELEMENT_TYPE
+
 # ship it
 module.exports = wrap
