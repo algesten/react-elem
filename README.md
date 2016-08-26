@@ -77,8 +77,36 @@ ul(() => {
 })
 ```
 
+## wrap
 
-#### ISC License (ISC)
+The basis of react-elem is to wrap a [React factory function][reacfac]
+with another function that has a more flexible argument order. This can be done for 
+any react component.
+
+```javascript
+import wrap from 'react-elem';           // wrapping function
+import MyComponent from './MyComponent'; // a standard react component
+
+myComponentFn = wrap(createFactory(MyComponent)); // make wrapped factory function
+
+export default () => {
+    myComponentFn('Works!');
+}
+```
+
+### wrapall
+
+There's a utility function to wrap all members of an object.
+
+```javascript
+import {wrapall} from 'react-elem';      // mega-function
+
+import {DOM} from 'react-dom';           // standard react factory functions
+
+myDOM = wrapall(DOM); // this is exactly what {DOM} is in react-elem
+```
+
+## ISC License (ISC)
 
 Copyright (c) 2016, Martin Algesten <martin@algesten.se>
 
@@ -95,3 +123,5 @@ DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
 PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
+
+[reacfac]: https://facebook.github.io/react/docs/top-level-api.html#react.createfactory
