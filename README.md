@@ -2,6 +2,8 @@
 
 > Simpler elements without JSX
 
+[![Build Status](https://travis-ci.org/algesten/react-elem.svg?branch=master)](https://travis-ci.org/algesten/react-elem)
+
 You can use any order of the function args.
 
 Example:
