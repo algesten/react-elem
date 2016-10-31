@@ -31,6 +31,7 @@ describe 'wrap', ->
         [[{p:1}, {c:2}], [{p:1, c:2}, null], 'obj, obj']
         [['panda', {p:1}, {c:2}], [{p:1, c:2}, 'panda'], 'str, obj, obj']
         [[{class:'b'}], [{className:'b'}, null], 'class to className']
+        [[{class:''}], [{className:''}, null], 'empty class to className']
         [[{class:'b'}, {p:2}], [{className:'b', p:2}, null], 'class, obj to className']
         [[{p:null}],[{p:null}, null], 'obj with null']
         [[e1], [null, null, e1], 'elem']

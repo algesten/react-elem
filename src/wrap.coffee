@@ -54,7 +54,7 @@ propsof = (as) ->
         else mixin propsas...
 
     # coffee is ok with class as prop name
-    if props?.class
+    if props?.class?
         props.className = props.class
         delete props.class
     props
