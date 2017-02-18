@@ -108,6 +108,28 @@ import {DOM} from 'react-dom';           // standard react factory functions
 myDOM = wrapall(DOM); // this is exactly what {DOM} is in react-elem
 ```
 
+### newroot
+
+Starts a new root so that function wrapped children can avoid being
+captured in the same parent.
+
+```javascript
+import {newroot} from 'react-elem';
+
+div(() => {
+    span("One")
+    span("Two")
+    span("Three")
+    newroot(() => {
+        div(() => {
+            span("One again") // not captured in outer div
+        })
+    })
+})
+```
+
+
+
 ## ISC License (ISC)
 
 Copyright (c) 2016, Martin Algesten <martin@algesten.se>

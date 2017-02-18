@@ -2,6 +2,7 @@
 describe 'wrap', ->
 
     wrap = require '../src/wrap'
+    {newroot} = wrap
 
     mkelem = (o) ->
         o.$$typeof = wrap.REACT_ELEMENT_TYPE
@@ -12,9 +13,10 @@ describe 'wrap', ->
     fne1 = wrap -> e1
     fne2 = wrap -> e2
 
-    div = fn = null
+    div = fn = span = fn2 = null
     beforeEach ->
-        div = wrap fn = spy ->
+        div  = wrap fn  = spy ->
+        span = wrap fn2 = spy ->
 
     TESTS = [
         [[], [null, null], 'no arg']
@@ -55,3 +57,12 @@ describe 'wrap', ->
             div t[0]...
             eql fn.args.length, 1
             eql fn.args[0], t[1]
+
+    describe 'newroot', ->
+
+        it 'ensures children are not captured in parent', ->
+            div ->
+                fne1()
+                newroot -> span -> fne1()
+            eql fn.args,  [[null, null, e1]]
+            eql fn2.args, [[null, null, e1]]

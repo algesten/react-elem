@@ -94,6 +94,17 @@ wrap = (fn) -> wfn = wrapCapture(fn); (as...) -> wfn propsof(as), strnof(as), ch
 # i.e. DOM = wrapall React.DOM
 wrap.wrapall = (o) -> t = {}; t[k] = wrap(v) for k, v of o when isfunction(v); t
 
+# starts a new capture root, this is good when using nested element.
+wrap.newroot = (fn) ->
+    saved = capture
+    capture = []
+    try
+        fn()
+    catch err
+        throw err
+    finally
+        capture = saved
+
 # attempt to find react and expose the React.DOM wrapped
 try
     React = require 'react'
