@@ -1,6 +1,6 @@
 {
   "name": "react-elem",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Simpler React Elements (without JSX)",
   "main": "lib/wrap.js",
   "author": "Martin Algesten",
