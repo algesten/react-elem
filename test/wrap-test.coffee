@@ -1,4 +1,6 @@
 
+{createElement} = require 'react'
+
 describe 'wrap', ->
 
     wrap = require '../src/wrap'
@@ -8,6 +10,8 @@ describe 'wrap', ->
         o.$$typeof = wrap.REACT_ELEMENT_TYPE
         o
 
+    dive  = mkelem {el:'div'}
+    spane = mkelem {el:'span'}
     e1 = mkelem {el:1}
     e2 = mkelem {el:2}
     fne1 = wrap -> e1
@@ -15,8 +19,8 @@ describe 'wrap', ->
 
     div = fn = span = fn2 = null
     beforeEach ->
-        div  = wrap fn  = spy ->
-        span = wrap fn2 = spy ->
+        div  = wrap fn  = spy -> dive
+        span = wrap fn2 = spy -> spane
 
     TESTS = [
         [[], [null, null], 'no arg']
@@ -48,7 +52,8 @@ describe 'wrap', ->
         [[(->fne1(); fne2())], [null, null, e1, e2], '-> (elem; elem)']
         [[(->fne1()), e2], [null, null, e1, e2], '(-> elem), elem']
         [[(->fne1()), (->fne2())], [null, null, e1, e2], '(-> elem), (-> elem)']
-        [[(->fne1(fne2()))], [null, null, e1], '(-> elem(-> elem))']
+        [[(->fne1(-> fne2()))], [null, null, e1], '(-> elem(-> elem))']
+        [[(->fne1(fne2('a')))], [null, null, e1], '(-> elem(elem))']
     ]
 
     TESTS.forEach (t) ->

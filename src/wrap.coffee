@@ -30,11 +30,10 @@ mixin     = (os...) -> t = {}; t[k] = v for k,v of o for o in os; t
 capture = []
 
 # helper to wrap a capture
-wrapCapture = (fn) -> (as...) ->
-    ret = fn as...
+docapture = (el) ->
     if capture.length
-        capture[0].push ret
-    ret
+        capture[0].push el
+    el
 
 # helper to ensure element is not captured
 uncapture = (el) ->
@@ -87,7 +86,7 @@ childsof = (as) ->
 
 
 # the wrapper picking out all the bits
-wrap = (fn) -> wfn = wrapCapture(fn); (as...) -> wfn propsof(as), strnof(as), childsof(as)...
+wrap = (fn) -> (as...) -> docapture fn propsof(as), strnof(as), childsof(as)...
 
 
 # helper to wrap all values in an object
@@ -111,10 +110,20 @@ try
     # expose all of reacts DOM
     wrap.DOM = wrap.wrapall React.DOM
 catch
-    console?.warn 'No React for react-elem. Failed to expose DOM', err
+    console?.warn? 'No React for react-elem. Failed to expose DOM', err
+
+try
+    # wire up refnux to proxy connected component to
+    # the capture.
+    require('refnux').proxy.doproxy = docapture
+catch
+    console?.log? 'No refnux'
 
 # expose this
 wrap.REACT_ELEMENT_TYPE = REACT_ELEMENT_TYPE
+
+# expose the docapture
+wrap.docapture = docapture
 
 # ship it
 module.exports = wrap
